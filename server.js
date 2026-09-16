@@ -25,8 +25,16 @@ async function gemini({ system, contents, json = false, maxOutputTokens = 1024 }
       contents,
       generationConfig: { maxOutputTokens, ...(json ? { responseMimeType: 'application/json' } : {}) },
     };
-    const res = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json', 'x-goog-api-key': API_KEY }, body: JSON.stringify(body) });
-    const data = await res.json().catch(() => ({}));
+    let res, data;
+    // Sobrecarga (503/500) é temporária: tenta de novo no mesmo modelo com espera curta antes de trocar de modelo
+    for (let tentativa = 0; tentativa < 3; tentativa++) {
+      try {
+        res = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json', 'x-goog-api-key': API_KEY }, body: JSON.stringify(body), signal: AbortSignal.timeout(30000) });
+        data = await res.json().catch(() => ({}));
+      } catch (e) { res = { ok: false, status: 504 }; data = { error: { message: 'Tempo esgotado ao falar com o Gemini.' } }; }
+      if (res.ok || ![500, 503, 504].includes(res.status)) break;
+      await new Promise(r => setTimeout(r, 700 * (tentativa + 1)));
+    }
     if (res.ok) {
       const text = (data.candidates?.[0]?.content?.parts || []).filter(p => p.text && !p.thought).map(p => p.text).join('');
       if (text) return { text, model };
@@ -34,7 +42,7 @@ async function gemini({ system, contents, json = false, maxOutputTokens = 1024 }
       continue;
     }
     lastErr = Object.assign(new Error(data.error?.message || `HTTP ${res.status}`), { status: res.status });
-    if (res.status === 404 || res.status === 429) continue; // tenta o próximo modelo
+    if ([404, 429, 500, 503, 504].includes(res.status)) continue; // modelo indisponível ou sobrecarregado: tenta o próximo
     break;
   }
   throw lastErr;
