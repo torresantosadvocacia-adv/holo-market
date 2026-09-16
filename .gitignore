@@ -1,0 +1,9 @@
+# Segredos — o token do Gemini NUNCA sobe para o repositório
+.env
+.env.*
+!.env.example
+
+# Dependências e artefatos
+node_modules/
+npm-debug.log*
+.DS_Store

@@ -1,0 +1,23 @@
+SUAS FOTOS DAS CARTAS
+=====================
+Solte aqui as fotos (JPG, PNG ou WEBP). O nome do arquivo diz qual carta ele substitui.
+Pode usar o código da carta OU o nome dela (maiúsculas, acentos e espaços não importam):
+
+  c01.jpg  ou  charizard.jpg          → Charizard (Base Set)
+  c02.jpg  ou  blastoise.jpg          → Blastoise (Base Set)
+  c03.jpg  ou  venusaur.jpg           → Venusaur (Base Set)
+  c04.jpg  ou  mewtwo.jpg             → Mewtwo (Base Set)
+  c05.jpg  ou  machamp.jpg            → Machamp (Base Set)
+  c06.jpg  ou  lugia.jpg              → Lugia (Neo Genesis)
+  c07.jpg  ou  ho-oh.jpg              → Ho-Oh (Neo Revelation)
+  c08.jpg  ou  rayquaza.jpg           → Rayquaza ★ (EX Deoxys)
+  c09.jpg  ou  umbreon.jpg            → Umbreon ★ (POP Series 5)
+  c10.jpg  ou  umbreon-vmax.jpg       → Umbreon VMAX (Evolving Skies)
+  c11.jpg  ou  rayquaza-vmax.jpg      → Rayquaza VMAX (Evolving Skies)
+  c12.jpg  ou  charizard-vmax-shiny.jpg → Charizard VMAX Shiny (Shining Fates)
+  c13.jpg  ou  pikachu-vmax.jpg       → Pikachu VMAX (Vivid Voltage)
+  c14.jpg  ou  charizard-ex-sir.jpg   → Charizard ex SIR (Obsidian Flames)
+
+Dica: fotos em pé (retrato), proporção parecida com a de uma carta (63 × 88 mm), ficam melhores no efeito holográfico.
+Depois de colocar o arquivo, recarregue a página. Não precisa reiniciar o servidor.
+Para o site publicado no Render, as fotos precisam estar no repositório do GitHub (git add + commit + push).

@@ -1,0 +1,16 @@
+# Blueprint do Render: em render.com → New → Blueprint → escolha o repositório. Ele lê este arquivo.
+services:
+  - type: web
+    name: holo-market
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/status
+    envVars:
+      - key: NODE_VERSION
+        value: "24"
+      - key: GEMINI_API_KEY
+        sync: false          # cole a chave no painel do Render; ela nunca vai para o repositório
+      - key: GEMINI_MODEL
+        value: gemini-2.5-flash

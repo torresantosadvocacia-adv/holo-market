@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HOLO — cartas raras, autenticidade verificada</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,200..800&family=Geist:wght@300..700&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%2308090a'/><text x='16' y='22' font-size='18' text-anchor='middle' fill='%23fff' font-family='sans-serif' font-weight='700'>H</text></svg>">
+</head>
+<body>
+<div class="orbs" aria-hidden="true"><i></i><i></i><i></i></div>
+
+<header class="topbar">
+  <a class="logo" href="#top"><span class="logo-mark">H</span>HOLO<span class="live-dot" title="mercado ao vivo"></span></a>
+  <label class="search"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input id="search" type="search" placeholder="Buscar carta, coleção, cert…" autocomplete="off"></label>
+  <nav class="nav">
+    <a href="#mercado">Mercado</a><a href="#verificar">Verificar</a><a href="#vender" id="nav-sell">Vender</a>
+  </nav>
+  <div class="mode" role="group" aria-label="Modo"><button class="mode-btn is-on" data-mode="buyer">Comprador</button><button class="mode-btn" data-mode="seller">Vendedor</button></div>
+  <button class="cart-btn" id="cart-btn" aria-label="Abrir carrinho"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6h15l-1.5 8h-12z"/><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/><path d="M6 6 5 3H2"/></svg><span id="cart-count" class="count">0</span></button>
+</header>
+
+<main id="top">
+  <section class="hero bento">
+    <div class="tile hero-copy">
+      <p class="eyebrow"><span class="live-dot"></span>MERCADO AO VIVO · SET 2026</p>
+      <h1>Cartas raras.<br>Autenticidade <em>verificada</em>.</h1>
+      <p class="lede">Cada carta da HOLO chega lacrada por uma graduadora, com certificado conferível e triagem anti-falsificação por IA. Compre, venda e pergunte ao assistente.</p>
+      <div class="cta-row"><a class="btn btn-primary" href="#mercado">Explorar mercado</a><button class="btn btn-ghost" id="hero-chat">Perguntar ao HOLO ↗</button></div>
+      <ul class="trust"><li><b>PSA · CGC · BGS</b> registros conferidos</li><li><b>Gemini Vision</b> triagem por foto</li><li><b>Seguro</b> em todo envio</li></ul>
+    </div>
+    <div class="tile hero-card" id="hero-card"></div>
+    <div class="tile stat"><p class="label">ÍNDICE HOLO</p><p class="stat-val mono" id="stat-index">—</p><svg class="spark" id="stat-spark" viewBox="0 0 120 36" preserveAspectRatio="none"></svg><p class="label" id="stat-delta">—</p></div>
+    <div class="tile stat"><p class="label">CERTS NO REGISTRO</p><p class="stat-val mono" id="stat-certs">—</p><p class="label">3 graduadoras + HOLO Vault</p></div>
+    <div class="tile stat"><p class="label">ANÚNCIOS ATIVOS</p><p class="stat-val mono" id="stat-listings">—</p><p class="label" id="stat-new">nenhum novo hoje</p></div>
+  </section>
+
+  <section id="mercado" class="market">
+    <div class="section-head"><h2>Mercado</h2><div class="filters" id="filters"></div>
+      <select id="sort" class="select"><option value="featured">Destaques</option><option value="price-desc">Maior preço</option><option value="price-asc">Menor preço</option><option value="grade">Maior nota</option><option value="pop">Menor população</option></select></div>
+    <div class="grid" id="grid"></div>
+  </section>
+
+  <section id="verificar" class="verify bento">
+    <div class="tile verify-cert">
+      <p class="label">01 · CERTIFICADO</p>
+      <h2>Esse cert é <em>real</em>?</h2>
+      <p class="muted">Cole o número da etiqueta (PSA, CGC, BGS ou HOLO Vault). Cruzamos com o registro e comparamos com o anúncio.</p>
+      <form id="verify-form" class="row"><input id="verify-input" class="input mono" placeholder="ex.: PSA-48213377" autocomplete="off"><button class="btn btn-primary" type="submit">Verificar</button></form>
+      <p class="hint mono">Teste: PSA-48213377 · CGC-4021998001 · PSA-00000001 (revogado) · ABC-123</p>
+      <div id="verify-result" class="result" hidden></div>
+    </div>
+    <div class="tile verify-photo">
+      <p class="label">02 · TRIAGEM POR FOTO · GEMINI VISION</p>
+      <h2>Suspeita de <em>falsa</em>?</h2>
+      <p class="muted">Envie uma foto. A IA analisa tipografia, saturação, padrão holo, bordas e centralização. É uma triagem, não um laudo.</p>
+      <label class="drop" id="drop"><input type="file" id="photo" accept="image/*" hidden><span id="drop-text">Arraste uma foto ou clique para escolher</span><img id="drop-preview" alt="" hidden></label>
+      <div id="auth-result" class="result" hidden></div>
+    </div>
+  </section>
+
+  <section id="vender" class="sell tile" hidden>
+    <p class="label">MODO VENDEDOR</p>
+    <h2>Anuncie em <em>segundos</em>.</h2>
+    <p class="muted">Preencha o básico. A IA escreve a descrição e sugere um preço de mercado. Sem graduação a carta entra como "pendente" e ganha selo HOLO Vault depois da conferência.</p>
+    <form id="sell-form" class="sell-grid">
+      <input class="input" name="name" placeholder="Nome da carta (ex.: Gengar ex)" required>
+      <input class="input" name="set" placeholder="Coleção (ex.: 151)">
+      <select class="select" name="condition"><option>Near Mint</option><option>Mint</option><option>Gem Mint</option><option>Lightly Played</option></select>
+      <select class="select" name="type"><option>Colorless</option><option>Fire</option><option>Water</option><option>Grass</option><option>Lightning</option><option>Psychic</option><option>Fighting</option><option>Darkness</option><option>Dragon</option></select>
+      <input class="input" name="grade" placeholder="Graduação (opcional, ex.: PSA 9)">
+      <input class="input mono" name="price" type="number" min="1" placeholder="Preço R$" required>
+      <textarea class="input" name="description" rows="3" placeholder="Descrição (ou clique em Gerar com IA)"></textarea>
+      <div class="row"><button type="button" class="btn btn-ghost" id="ai-describe">✦ Gerar com IA</button><button type="submit" class="btn btn-primary">Publicar anúncio</button></div>
+    </form>
+  </section>
+
+  <footer class="foot"><span class="mono">HOLO © 2026 · projeto acadêmico · Gemini API + Node/Express</span><span class="mono" id="ai-status">IA: —</span></footer>
+</main>
+
+<!-- Carrinho -->
+<aside class="drawer" id="drawer" aria-hidden="true">
+  <div class="drawer-head"><h3>Carrinho</h3><button class="icon-btn" id="drawer-close" aria-label="Fechar">✕</button></div>
+  <div id="cart-items" class="cart-items"></div>
+  <div class="drawer-foot"><div class="row between"><span class="muted">Frete</span><span class="mono" id="cart-ship">—</span></div><div class="row between total"><span>Total</span><span class="mono" id="cart-total">R$ 0</span></div><button class="btn btn-primary wide" id="checkout">Finalizar com Pix ou cartão</button><p class="hint">Confirmação humana sempre: o assistente nunca fecha compra sozinho.</p></div>
+</aside>
+
+<!-- Detalhe -->
+<div class="modal" id="modal" hidden><div class="modal-card" id="modal-card"></div></div>
+
+<!-- Chat -->
+<button class="chat-fab" id="chat-fab" aria-label="Abrir chat de suporte"><span class="holo-text">✦</span> Suporte HOLO</button>
+<section class="chat" id="chat" hidden>
+  <div class="chat-head"><div><b>HOLO</b> <span class="label" id="chat-mode">assistente</span></div><button class="icon-btn" id="chat-close" aria-label="Fechar">✕</button></div>
+  <div class="chat-log" id="chat-log"></div>
+  <div class="chips" id="chips"></div>
+  <form class="chat-form" id="chat-form"><input id="chat-input" class="input" placeholder="Pergunte sobre cartas, preços, certificados…" autocomplete="off"><button class="btn btn-primary" type="submit">Enviar</button></form>
+</section>
+
+<div class="toast" id="toast" hidden></div>
+<script src="app.js"></script>
+</body>
+</html>
